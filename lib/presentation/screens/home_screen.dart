@@ -1,4 +1,7 @@
+import 'package:bloc_concept/constants/enums.dart';
 import 'package:bloc_concept/logic/cubit/counter_cubit.dart';
+import 'package:bloc_concept/logic/cubit/counter_state.dart';
+import 'package:bloc_concept/logic/cubit/internet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +30,19 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            BlocBuilder<InternetCubit, InternetState>(
+                builder: (context, state) {
+              if (state is InternetConnected &&
+                  state.connectionType == ConnectionType.wifi) {
+                return const Text('Wifi');
+              } else if (state is InternetConnected &&
+                  state.connectionType == ConnectionType.mobile) {
+                return const Text('Mobile');
+              } else if (state is InternetnetDisconnected) {
+                return const Text('Disconnected');
+              }
+              return const CircularProgressIndicator();
+            }),
             const Text(
               'You have pushed the button this many times:',
             ),
