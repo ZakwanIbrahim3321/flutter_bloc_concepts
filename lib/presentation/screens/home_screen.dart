@@ -1,9 +1,9 @@
-import 'package:bloc_concept/constants/enums.dart';
-import 'package:bloc_concept/logic/cubit/counter_cubit.dart';
-import 'package:bloc_concept/logic/cubit/counter_state.dart';
-import 'package:bloc_concept/logic/cubit/internet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../constants/enums.dart';
+import '../../logic/cubit/counter_cubit.dart';
+import '../../logic/cubit/counter_state.dart';
+import '../../logic/cubit/internet_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -121,6 +121,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 25,
             ),
+            Builder(builder: (context) {
+              final counterValue = context
+                  .select((CounterCubit cubit) => cubit.state.counterValue);
+              return Text(
+                'Counter: ${counterValue.toString()}',
+                style: Theme.of(context).textTheme.headlineLarge,
+              );
+            }),
+            const SizedBox(height: 25,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -128,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: widget.color,
                   heroTag: "btn1",
                   onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).decrement();
+                    //BlocProvider.of<CounterCubit>(context).decrement();
+                    context.read<CounterCubit>().decrement();
                   },
                   tooltip: 'Decrement',
                   child: const Icon(Icons.remove),
