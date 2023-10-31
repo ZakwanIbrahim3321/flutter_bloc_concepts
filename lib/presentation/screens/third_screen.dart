@@ -1,4 +1,5 @@
 import 'package:bloc_concept/logic/cubit/counter_cubit.dart';
+import 'package:bloc_concept/logic/cubit/counter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -71,32 +72,32 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 }
               },
             ),
-            const SizedBox(
-              height: 25,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  backgroundColor: widget.color,
-                  heroTag: "btn1",
-                  onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).decrement();
-                  },
-                  tooltip: 'Decrement',
-                  child: const Icon(Icons.remove),
-                ),
-                FloatingActionButton(
-                  backgroundColor: widget.color,
-                  heroTag: "btn2",
-                  onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).increment();
-                  },
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                )
-              ],
-            ),
+            // const SizedBox(
+            //   height: 25,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     FloatingActionButton(
+            //       backgroundColor: widget.color,
+            //       heroTag: "btn1",
+            //       onPressed: () {
+            //         BlocProvider.of<CounterCubit>(context).decrement();
+            //       },
+            //       tooltip: 'Decrement',
+            //       child: const Icon(Icons.remove),
+            //     ),
+            //     FloatingActionButton(
+            //       backgroundColor: widget.color,
+            //       heroTag: "btn2",
+            //       onPressed: () {
+            //         BlocProvider.of<CounterCubit>(context).increment();
+            //       },
+            //       tooltip: 'Increment',
+            //       child: const Icon(Icons.add),
+            //     )
+            //   ],
+            // ),
           ],
         ),
       ),

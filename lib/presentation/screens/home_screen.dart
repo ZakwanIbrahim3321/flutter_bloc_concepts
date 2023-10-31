@@ -1,6 +1,9 @@
-import 'package:bloc_concept/logic/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../constants/enums.dart';
+import '../../logic/cubit/counter_cubit.dart';
+import '../../logic/cubit/counter_state.dart';
+import '../../logic/cubit/internet_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -27,9 +30,28 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            BlocBuilder<InternetCubit, InternetState>(
+                builder: (context, state) {
+              if (state is InternetConnected &&
+                  state.connectionType == ConnectionType.wifi) {
+                return Text(
+                  'Wifi',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              } else if (state is InternetConnected &&
+                  state.connectionType == ConnectionType.mobile) {
+                return Text(
+                  'Mobile',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              } else if (state is InternetnetDisconnected) {
+                return Text(
+                  'Disconnected',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              }
+              return const CircularProgressIndicator();
+            }),
             const SizedBox(
               height: 25,
             ),
@@ -74,6 +96,40 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 25,
             ),
+            Builder(builder: (context) {
+              final counterState = context.watch<CounterCubit>().state;
+              final internetState = context.watch<InternetCubit>().state;
+              if (internetState is InternetConnected &&
+                  internetState.connectionType == ConnectionType.wifi) {
+                return Text(
+                  'Counter: ${counterState.counterValue.toString()} Internet: Wifi',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              } else if (internetState is InternetConnected &&
+                  internetState.connectionType == ConnectionType.mobile) {
+                return Text(
+                  'Counter: ${counterState.counterValue.toString()} Internet: Mobile',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              } else {
+                return Text(
+                  'Counter: ${counterState.counterValue.toString()} Internet: Disconnected',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              }
+            }),
+            const SizedBox(
+              height: 25,
+            ),
+            Builder(builder: (context) {
+              final counterValue = context
+                  .select((CounterCubit cubit) => cubit.state.counterValue);
+              return Text(
+                'Counter: ${counterValue.toString()}',
+                style: Theme.of(context).textTheme.headlineLarge,
+              );
+            }),
+            const SizedBox(height: 25,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -81,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: widget.color,
                   heroTag: "btn1",
                   onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).decrement();
+                    //BlocProvider.of<CounterCubit>(context).decrement();
+                    context.read<CounterCubit>().decrement();
                   },
                   tooltip: 'Decrement',
                   child: const Icon(Icons.remove),
